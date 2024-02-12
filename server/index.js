@@ -13,7 +13,7 @@ app.use(express.json());
 const animals = [...Array(250).keys()].map((id) => {
   return {
     id,
-    type: chance.animals(),
+    type: chance.animal(),
     age: chance.age(),
     name: chance.name(),
   };
@@ -21,5 +21,11 @@ const animals = [...Array(250).keys()].map((id) => {
 
 // Endpont to serach for animals
 app.get("", (req, res) => {
-  // Filter results by query
+  const q = req.query.q?.toLowerCase() || "";
+  const results = animals.filter((animal) =>
+    animal.type.toLowerCase().includes(q)
+  );
+  res.send(results);
 });
+
+app.listen(8080, () => console.log("Listening on port http://localhost:8080"));
